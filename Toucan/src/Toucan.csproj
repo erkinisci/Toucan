@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+		<TargetFrameworks>$(TargetFrameworks);net40</TargetFrameworks>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(VisualStudioVersion)' &gt;= '16'">
+		<TargetFrameworks>$(TargetFrameworks);netstandard2.1</TargetFrameworks>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
+
+</Project>

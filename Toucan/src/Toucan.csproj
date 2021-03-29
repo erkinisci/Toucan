@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     
 	<PropertyGroup>
-    <TargetFrameworks>netstandard1.1;netstandard2.0;net461;net472</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461;net472</TargetFrameworks>
     <AssemblyName>Toucan</AssemblyName>
     <RootNamespace>Toucan</RootNamespace>
     <Version>1.0.0</Version>
@@ -17,5 +17,9 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+    
+	<ItemGroup>
+	  <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+	</ItemGroup>
 
 </Project>

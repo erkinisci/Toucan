@@ -1,19 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+    
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0</TargetFrameworks>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
-		<TargetFrameworks>$(TargetFrameworks);net40</TargetFrameworks>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(VisualStudioVersion)' &gt;= '16'">
-		<TargetFrameworks>$(TargetFrameworks);netstandard2.1</TargetFrameworks>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
-	</PropertyGroup>
+    <TargetFrameworks>netstandard1.1;netstandard2.0;net461;net472</TargetFrameworks>
+    <AssemblyName>Toucan</AssemblyName>
+    <RootNamespace>Toucan</RootNamespace>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <InformationalVersion>1.0.0.0</InformationalVersion>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Description></Description>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Authors>Erkin Isci</Authors>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
 
 </Project>

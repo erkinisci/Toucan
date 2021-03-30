@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toucan", "Toucan\src\Toucan.csproj", "{0E5CDE7F-A129-4E98-9449-EE7A7BD2A4D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toucan.Tests", "Toucan\Toucan.Tests\Toucan.Tests.csproj", "{69FFD0B3-5CC7-4710-9B3E-6933D27E3BC0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toucan.Tests", "Toucan\test\Toucan.Tests.csproj", "{69FFD0B3-5CC7-4710-9B3E-6933D27E3BC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

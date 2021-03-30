@@ -22,4 +22,13 @@
 	  <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
 	</ItemGroup>
 
+	<PropertyGroup Label="NuspecProperties">
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<AssemblyTitle>Toucan</AssemblyTitle>
+		<PackageLicenseExpression></PackageLicenseExpression>
+		<PackageIconUrl></PackageIconUrl>
+		<PackageProjectUrl>https://github.com/erkinisci/toucan</PackageProjectUrl>
+		<PackageTags>Exception Handling Retry Async-Retry </PackageTags>
+		<PackageReleaseNotes></PackageReleaseNotes>
+	</PropertyGroup>
 </Project>

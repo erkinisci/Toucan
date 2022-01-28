@@ -1,4 +1,4 @@
-﻿namespace Toucan.Retry
+﻿namespace Toucan.Enums
 {
     /// <summary>
     /// Retry Count for fault-async operation

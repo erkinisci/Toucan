@@ -1,6 +1,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Toucan.Enums;
+using Toucan.Models;
 using Toucan.Retry;
 using Xunit;
 
@@ -13,12 +15,12 @@ public class AsyncRetryExecutorTests
     {
         var cancellationToken = new CancellationToken(false);
         
-        var execute = await AsyncRetryExecutor.Execute<object>(cancellationToken, _ => null, async exception => await OnException(exception));
+        var execute = await AsyncRetryExecutor.Execute<object>(cancellationToken, _ => null, async _ => await OnException());
 
         Assert.Null(execute);
     }
 
-    private ValueTask<RetryStrategy?> OnException(Exception exception)
+    private static ValueTask<RetryStrategy?> OnException()
     {
         return new ValueTask<RetryStrategy?>(RetryStrategy.None);
     }
@@ -33,7 +35,7 @@ public class AsyncRetryExecutorTests
         {
             value++;
             return Task.FromResult(value);
-        }, async exception => await OnException(exception));
+        }, async _ => await OnException());
         Assert.True(value == 2);
     }
 
@@ -55,7 +57,7 @@ public class AsyncRetryExecutorTests
             while (value < 5);
 
             return Task.FromResult(value);
-        }, _ => Task.FromResult<RetryStrategy>(null!)!);
+        }, _ => new ValueTask<RetryStrategy?>(RetryStrategy.None));
     }
 
     [Fact]
@@ -201,10 +203,8 @@ public class AsyncRetryExecutorTests
         var cancellationToken = new CancellationToken(false);
         var value = 1;
 
-        var expectedTryCount = 1;
+        const int expectedTryCount = 1;
         var triedCount = 0;
-
-        Task OnBefore(RetryStrategy rs, int tc) => Task.FromResult(triedCount = tc);
 
         await AsyncRetryExecutor.Execute(cancellationToken, _ =>
         {
@@ -224,7 +224,12 @@ public class AsyncRetryExecutorTests
                 return await new ValueTask<RetryStrategy?>(new RetryStrategy(RetryTimes.One));
 
             return await new ValueTask<RetryStrategy?>(RetryStrategy.None);
-        }, OnBefore);
+        }, (_, tryCount) =>
+        {
+            triedCount = tryCount;
+            
+            return new ValueTask();
+        });
 
         Assert.True(value == 3);
         Assert.True(triedCount == expectedTryCount);
@@ -235,12 +240,7 @@ public class AsyncRetryExecutorTests
     {
         var cancellationToken = new CancellationToken(false);
         var value = 1;
-
-        var expectedTryCount = 2;
-        var triedCount = 0;
-
-        Task OnBefore(RetryStrategy rs, int tc) => Task.FromResult(triedCount = tc);
-
+        
         await AsyncRetryExecutor.Execute(cancellationToken, _ =>
         {
             do
@@ -258,15 +258,9 @@ public class AsyncRetryExecutorTests
             while (value < 5);
 
             return Task.FromResult(value);
-        }, async exception =>
-        {
-            if (exception != null)
-                return await new ValueTask<RetryStrategy?>(new RetryStrategy(RetryTimes.Two));
-
-            return await new ValueTask<RetryStrategy?>(RetryStrategy.None);
-        }, OnBefore);
+        }, async _ => await new ValueTask<RetryStrategy?>(new RetryStrategy(RetryTimes.Two))
+            , (_, _) => new ValueTask());
 
         Assert.True(value == 5);
-        Assert.True(triedCount == expectedTryCount);
     }
 }

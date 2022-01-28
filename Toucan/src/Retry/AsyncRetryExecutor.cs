@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Toucan.Models;
 
 namespace Toucan.Retry
 {
@@ -25,7 +26,7 @@ namespace Toucan.Retry
         /// <returns></returns>
         public static Task<TResult> Execute<TResult>(CancellationToken cancellationToken
             , Func<CancellationToken, Task<TResult>?> action
-            , Func<Exception, Task<RetryStrategy?>> onException)
+            , Func<Exception, ValueTask<RetryStrategy?>> onException)
         {
             return AsyncRetryExecutorWrapper.Execute(cancellationToken, action, onException);
         }
@@ -41,8 +42,8 @@ namespace Toucan.Retry
         /// <returns></returns>
         public static Task<TResult> Execute<TResult>(CancellationToken cancellationToken
             , Func<CancellationToken, Task<TResult>?> action
-            , Func<Exception, Task<RetryStrategy?>> onException
-            , Func<RetryStrategy, int, Task> beforeRetry)
+            , Func<Exception, ValueTask<RetryStrategy?>> onException
+            , Func<RetryStrategy, int, ValueTask> beforeRetry)
         {
             return AsyncRetryExecutorWrapper.Execute(cancellationToken, action, onException, beforeRetry);
         }
@@ -59,8 +60,8 @@ namespace Toucan.Retry
         /// <returns></returns>
         public static Task<TResult> Execute<TResult>(CancellationToken cancellationToken
             , Func<CancellationToken, Task<TResult>?> action
-            , Func<Exception, Task<RetryStrategy?>> onException
-            , Func<RetryStrategy, int, Task> beforeRetry
+            , Func<Exception, ValueTask<RetryStrategy?>> onException
+            , Func<RetryStrategy, int, ValueTask> beforeRetry
             , bool throwException) =>
             AsyncRetryExecutorWrapper.Execute(cancellationToken, action, onException, beforeRetry, throwException);
     }

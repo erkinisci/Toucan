@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Toucan.Models;
 
 namespace Toucan.Retry
 {
@@ -9,33 +10,32 @@ namespace Toucan.Retry
         internal Task<TResult> Execute<TResult>(CancellationToken cancellationToken
             , Func<CancellationToken, Task<TResult>?> action)
         {
-            var doNothing = new Func<Exception, Task<RetryStrategy?>>(exception => new Task<RetryStrategy?>(() => RetryStrategy.None));
-            var doNothingBefore = new Func<RetryStrategy, int, Task>((strategy, count) => Task.FromResult(new Task<RetryStrategy?>(() => RetryStrategy.None)));
-
-            return Execute(cancellationToken, action, doNothing, doNothingBefore);
+            return Execute(cancellationToken, action, exception => new ValueTask<RetryStrategy?>());
         }
 
         internal Task<TResult> Execute<TResult>(CancellationToken cancellationToken
             , Func<CancellationToken, Task<TResult>?> action
-            , Func<Exception, Task<RetryStrategy?>> onException)
+            , Func<Exception, ValueTask<RetryStrategy?>> onException)
         {
-            var doNothingBefore = new Func<RetryStrategy, int, Task>((strategy, count) => Task.FromResult(new Task<RetryStrategy?>(() => RetryStrategy.None)));
-
-            return Execute(cancellationToken, action, onException, doNothingBefore);
+            return Execute(cancellationToken,
+                action,
+                onException,
+                (strategy,
+                    count) => new ValueTask());
         }
 
         internal Task<TResult> Execute<TResult>(CancellationToken cancellationToken
                                                             , Func<CancellationToken, Task<TResult>?> action
-                                                            , Func<Exception, Task<RetryStrategy?>> onException
-                                                            , Func<RetryStrategy, int, Task> beforeRetry)
+                                                            , Func<Exception, ValueTask<RetryStrategy?>> onException
+                                                            , Func<RetryStrategy, int, ValueTask> beforeRetry)
         {
             return Execute(cancellationToken, action, onException, beforeRetry, false);
         }
         
         internal static Task<TResult> Execute<TResult>(CancellationToken cancellationToken
             , Func<CancellationToken, Task<TResult>?> action
-            , Func<Exception, Task<RetryStrategy?>> onException
-            , Func<RetryStrategy, int, Task> beforeRetry
+            , Func<Exception, ValueTask<RetryStrategy?>> onException
+            , Func<RetryStrategy, int, ValueTask> beforeRetry
             , bool throwException
             , bool continueOnCapturedContext = false)
         {

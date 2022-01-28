@@ -1,6 +1,7 @@
 ﻿using System;
+using Toucan.Enums;
 
-namespace Toucan.Retry
+namespace Toucan.Models
 {
     /// <summary>
     /// 

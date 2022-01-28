@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     
 	<PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461;net472</TargetFrameworks>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Toucan</AssemblyName>
     <RootNamespace>Toucan</RootNamespace>
     <Version>1.0.0</Version>
@@ -16,10 +16,18 @@
     <Authors>Erkin Isci</Authors>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
     
 	<ItemGroup>
+	  <PackageReference Include="Microsoft.NETCore.Platforms" Version="6.0.1" />
+	  <PackageReference Include="NETStandard.Library" Version="2.0.3" />
+	  <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
 	  <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+	</ItemGroup>
+    
+	<ItemGroup>
+	  <None Remove="Toucan.csproj.DotSettings" />
 	</ItemGroup>
 
 	<PropertyGroup Label="NuspecProperties">

@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace Toucan.Retry
 {
-    internal class AsyncRetryEngine
+    internal static class AsyncRetryEngine
     {
         internal static async Task<TResult> ImplementationExecuteAsync<TResult>(CancellationToken cancellationToken
-            , Func<CancellationToken, Task<TResult>> action
-            , Func<Exception, Task<RetryStrategy>> onException
+            , Func<CancellationToken, Task<TResult>?> action
+            , Func<Exception, Task<RetryStrategy?>> onException
             , Func<RetryStrategy, int, Task> beforeRetry
             , bool throwException = false
             , bool continueOnCapturedContext = false)
@@ -20,28 +20,26 @@ namespace Toucan.Retry
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    RetryStrategy retryStrategy;
+                    RetryStrategy? retryStrategy;
 
                     try
                     {
-                        var result = await action(cancellationToken).ConfigureAwait(continueOnCapturedContext);
+                        var result = await action(cancellationToken)!.ConfigureAwait(continueOnCapturedContext);
 
                         return result;
                     }
                     catch (Exception ex)
                     {
-                        retryStrategy = await onException(ex);
+                        retryStrategy = await onException(ex) ?? RetryStrategy.None;
 
-                        retryStrategy ??= RetryStrategy.None;
-
-                        var canRetry = tryCount < retryStrategy.PermittedRetryCount;
+                        var canRetry = tryCount < retryStrategy!.PermittedRetryCount;
 
                         if (!canRetry)
                         {
                             if (throwException)
                                 throw;
 
-                            return default(TResult);
+                            return default!;
                         }
                     }
 

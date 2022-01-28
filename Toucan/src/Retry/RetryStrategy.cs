@@ -31,7 +31,7 @@ namespace Toucan.Retry
         /// </summary>
         /// <param name="retryTimes"></param>
         /// <param name="waitDuration"></param>
-        public RetryStrategy(RetryTimes retryTimes, TimeSpan waitDuration)
+        private RetryStrategy(RetryTimes retryTimes, TimeSpan waitDuration)
         {
             PermittedRetryCount = (int)retryTimes;
             WaitDuration = waitDuration;
@@ -40,6 +40,6 @@ namespace Toucan.Retry
         /// <summary>
         /// 
         /// </summary>
-        public static RetryStrategy None = new RetryStrategy(RetryTimes.None);
+        public static readonly RetryStrategy? None = new RetryStrategy(RetryTimes.None);
     }
 }

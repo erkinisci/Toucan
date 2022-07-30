@@ -16,7 +16,7 @@ namespace Toucan.Retry
             return Execute(cancellationToken, action, doNothingOnException, doNothingBeforeRetry);
         }
 
-        internal TResult Execute<TResult>(CancellationToken cancellationToken
+        internal static TResult Execute<TResult>(CancellationToken cancellationToken
             , Func<CancellationToken, TResult> action
             , Func<Exception, RetryStrategy?> onException)
         {
@@ -25,7 +25,7 @@ namespace Toucan.Retry
             return Execute(cancellationToken, action, onException, doNothingBefore);
         }
 
-        internal TResult Execute<TResult>(CancellationToken cancellationToken
+        internal static TResult Execute<TResult>(CancellationToken cancellationToken
             , Func<CancellationToken, TResult> action
             , Func<Exception, RetryStrategy?> onException
             , Action<RetryStrategy, int, TimeSpan, Exception, CancellationToken> beforeRetry)
@@ -33,7 +33,7 @@ namespace Toucan.Retry
             return Execute(cancellationToken, action, onException, beforeRetry,new List<Func<Exception, bool>>());
         }
 
-        internal TResult Execute<TResult>(CancellationToken cancellationToken
+        internal static TResult Execute<TResult>(CancellationToken cancellationToken
             , Func<CancellationToken, TResult> action
             , Func<Exception, RetryStrategy?> onException
             , Action<RetryStrategy, int, TimeSpan, Exception, CancellationToken> beforeRetry

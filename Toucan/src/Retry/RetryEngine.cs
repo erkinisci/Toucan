@@ -33,7 +33,7 @@ namespace Toucan.Retry
                         retryStrategy = onException(ex);
                         retryStrategy = retryStrategy ?? RetryStrategy.None;
 
-                        var canRetry = tryCount < retryStrategy.PermittedRetryCount;
+                        var canRetry = retryStrategy != null && tryCount < retryStrategy.PermittedRetryCount;
 
                         if (!canRetry)
                         {
@@ -42,7 +42,7 @@ namespace Toucan.Retry
                             if (thrown)
                                 throw;
 
-                            return default(TResult);
+                            return default(TResult)!;
                         }
 
                         lasException = ex;

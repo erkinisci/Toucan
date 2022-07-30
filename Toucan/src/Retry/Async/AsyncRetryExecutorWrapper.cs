@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Toucan.Models;
 
-namespace Toucan.Retry
+namespace Toucan.Retry.Async
 {
     internal class AsyncRetryExecutorWrapper
     {

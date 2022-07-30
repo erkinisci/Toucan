@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Toucan.Enums;
 using Toucan.Models;
-using Toucan.Retry;
+using Toucan.Retry.Async;
 using Xunit;
 
 namespace Toucan.Tests;

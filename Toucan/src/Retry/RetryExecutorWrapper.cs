@@ -5,13 +5,13 @@ using Toucan.Models;
 
 namespace Toucan.Retry
 {
-    internal class RetryExecutorWrapper
+    internal abstract class RetryExecutorWrapper
     {
         internal TResult Execute<TResult>(CancellationToken cancellationToken
             , Func<CancellationToken, TResult> action)
         {
-            var doNothingOnException = new Func<Exception, RetryStrategy?>(exception => RetryStrategy.None);
-            var doNothingBeforeRetry = new Action<RetryStrategy, int, TimeSpan, Exception, CancellationToken>((strategy, retryCount, waitDuration, lastException, token) => { });
+            var doNothingOnException = new Func<Exception, RetryStrategy?>(_ => RetryStrategy.None);
+            var doNothingBeforeRetry = new Action<RetryStrategy, int, TimeSpan, Exception, CancellationToken>((_, _, _, _, _) => { });
 
             return Execute(cancellationToken, action, doNothingOnException, doNothingBeforeRetry);
         }
@@ -20,7 +20,7 @@ namespace Toucan.Retry
             , Func<CancellationToken, TResult> action
             , Func<Exception, RetryStrategy?> onException)
         {
-            var doNothingBefore = new Action<RetryStrategy, int, TimeSpan, Exception, CancellationToken>((strategy, retryCount, waitDuration, lastException, token) => { });
+            var doNothingBefore = new Action<RetryStrategy, int, TimeSpan, Exception, CancellationToken>((_, _, _, _, _) => { });
 
             return Execute(cancellationToken, action, onException, doNothingBefore);
         }

@@ -41,6 +41,6 @@ namespace Toucan.Models
         /// <summary>
         /// 
         /// </summary>
-        public static readonly RetryStrategy? None = new RetryStrategy(RetryTimes.None);
+        public static readonly RetryStrategy? None = new(RetryTimes.None);
     }
 }

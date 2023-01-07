@@ -14,8 +14,9 @@ public class AsyncRetryExecutorTests
     public async Task ShouldReturnNull()
     {
         var cancellationToken = new CancellationToken(false);
-        
-        var execute = await AsyncRetryExecutor.Execute<object>(cancellationToken, _ => null, async _ => await OnException());
+
+        var execute =
+            await AsyncRetryExecutor.Execute<object>(cancellationToken, _ => null, async _ => await OnException());
 
         Assert.Null(execute);
     }
@@ -53,8 +54,7 @@ public class AsyncRetryExecutorTests
 
                 if (value == 2)
                     throw new Exception();
-            }
-            while (value < 5);
+            } while (value < 5);
 
             return Task.FromResult(value);
         }, _ => new ValueTask<RetryStrategy?>(RetryStrategy.None));
@@ -74,8 +74,7 @@ public class AsyncRetryExecutorTests
 
                 if (value == 2)
                     throw new Exception();
-            }
-            while (value < 5);
+            } while (value < 5);
 
             return Task.FromResult(value);
         }, async _ => await new ValueTask<RetryStrategy?>(new RetryStrategy(RetryTimes.One)));
@@ -102,8 +101,7 @@ public class AsyncRetryExecutorTests
                     case 4:
                         throw new Exception();
                 }
-            }
-            while (value < 5);
+            } while (value < 5);
 
             return Task.FromResult(value);
         }, async _ => await new ValueTask<RetryStrategy?>(new RetryStrategy(RetryTimes.One)));
@@ -130,8 +128,7 @@ public class AsyncRetryExecutorTests
                     case 4:
                         throw new Exception();
                 }
-            }
-            while (value < 5);
+            } while (value < 5);
 
             return Task.FromResult(value);
         }, async _ => await new ValueTask<RetryStrategy?>(new RetryStrategy(RetryTimes.Two)));
@@ -153,8 +150,7 @@ public class AsyncRetryExecutorTests
 
                 if (value == 2)
                     throw new Exception();
-            }
-            while (value < 3);
+            } while (value < 3);
 
             return Task.FromResult(value);
         }, async exception =>
@@ -182,8 +178,7 @@ public class AsyncRetryExecutorTests
 
                 if (value == 2)
                     throw new ArgumentException();
-            }
-            while (value < 3);
+            } while (value < 3);
 
             return Task.FromResult(value);
         }, async exception =>
@@ -214,8 +209,7 @@ public class AsyncRetryExecutorTests
 
                 if (value == 2)
                     throw new ArgumentException();
-            }
-            while (value < 3);
+            } while (value < 3);
 
             return Task.FromResult(value);
         }, async exception =>
@@ -227,7 +221,7 @@ public class AsyncRetryExecutorTests
         }, (_, tryCount) =>
         {
             triedCount = tryCount;
-            
+
             return new ValueTask();
         });
 
@@ -240,25 +234,24 @@ public class AsyncRetryExecutorTests
     {
         var cancellationToken = new CancellationToken(false);
         var value = 1;
-        
+
         await AsyncRetryExecutor.Execute(cancellationToken, _ =>
-        {
-            do
             {
-                value++;
-
-                switch (value)
+                do
                 {
-                    case 2:
-                        throw new Exception();
-                    case 4:
-                        throw new Exception();
-                }
-            }
-            while (value < 5);
+                    value++;
 
-            return Task.FromResult(value);
-        }, async _ => await new ValueTask<RetryStrategy?>(new RetryStrategy(RetryTimes.Two))
+                    switch (value)
+                    {
+                        case 2:
+                            throw new Exception();
+                        case 4:
+                            throw new Exception();
+                    }
+                } while (value < 5);
+
+                return Task.FromResult(value);
+            }, async _ => await new ValueTask<RetryStrategy?>(new RetryStrategy(RetryTimes.Two))
             , (_, _) => new ValueTask());
 
         Assert.True(value == 5);

@@ -1,46 +1,44 @@
 ﻿using System;
 using Toucan.Enums;
 
-namespace Toucan.Models
+namespace Toucan.Models;
+
+/// <summary>
+/// 
+/// </summary>
+public class RetryStrategy
 {
     /// <summary>
     /// 
     /// </summary>
-    public class RetryStrategy
+    public int PermittedRetryCount { get; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public TimeSpan WaitDuration { get; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="retryTimes"></param>
+    public RetryStrategy(RetryTimes retryTimes) : this(retryTimes, TimeSpan.Zero)
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public int PermittedRetryCount { get; }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        public TimeSpan WaitDuration { get; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="retryTimes"></param>
-        public RetryStrategy(RetryTimes retryTimes) : this(retryTimes, TimeSpan.Zero)
-        {
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="retryTimes"></param>
-        /// <param name="waitDuration"></param>
-        private RetryStrategy(RetryTimes retryTimes, TimeSpan waitDuration)
-        {
-            PermittedRetryCount = (int)retryTimes;
-            WaitDuration = waitDuration;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly RetryStrategy? None = new(RetryTimes.None);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="retryTimes"></param>
+    /// <param name="waitDuration"></param>
+    private RetryStrategy(RetryTimes retryTimes, TimeSpan waitDuration)
+    {
+        PermittedRetryCount = (int) retryTimes;
+        WaitDuration = waitDuration;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static readonly RetryStrategy? None = new(RetryTimes.None);
 }

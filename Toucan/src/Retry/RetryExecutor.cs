@@ -10,6 +10,14 @@ namespace Toucan.Retry;
 /// </summary>
 public class RetryExecutor
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <param name="action"></param>
+    /// <param name="onException"></param>
+    /// <typeparam name="TResult"></typeparam>
+    /// <returns></returns>
     public static TResult Execute<TResult>(CancellationToken cancellationToken
         , Func<CancellationToken, TResult> action
         , Func<Exception, RetryStrategy?> onException)

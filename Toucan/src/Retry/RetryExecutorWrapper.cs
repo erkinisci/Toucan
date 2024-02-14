@@ -32,7 +32,7 @@ internal abstract class RetryExecutorWrapper
         , Func<Exception, RetryStrategy?> onException
         , Action<RetryStrategy, int, TimeSpan, Exception, CancellationToken> beforeRetry)
     {
-        return Execute(cancellationToken, action, onException, beforeRetry, new List<Func<Exception, bool>>());
+        return Execute(cancellationToken, action, onException, beforeRetry, []);
     }
 
     internal static TResult Execute<TResult>(CancellationToken cancellationToken

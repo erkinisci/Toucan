@@ -31,7 +31,7 @@ internal static class RetryEngine
                 catch (Exception ex)
                 {
                     retryStrategy = onException(ex);
-                    retryStrategy = retryStrategy ?? RetryStrategy.None;
+                    retryStrategy ??= RetryStrategy.None;
 
                     var canRetry = retryStrategy != null && tryCount < retryStrategy.PermittedRetryCount;
 
@@ -48,7 +48,7 @@ internal static class RetryEngine
                     lasException = ex;
                 }
 
-                if (tryCount < retryStrategy.PermittedRetryCount) tryCount++;
+                if (tryCount < retryStrategy!.PermittedRetryCount) tryCount++;
 
                 beforeRetry(retryStrategy, tryCount, retryStrategy.WaitDuration, lasException, cancellationToken);
 
